@@ -62,8 +62,8 @@ provider:
 #    - include-me-dir/**
 
 functions:
-  hello:
-    handler: handler.hello
+  translate:
+    handler: functions/translate_handler.translate
     events:
       - http:
           method: get
