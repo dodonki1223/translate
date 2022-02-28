@@ -26,6 +26,7 @@ provider:
   region: ap-northeast-1
   profile: serverless
   endpointType: regional
+  apiName: translate-api-${sls:stage}
 
 # you can overwrite defaults here
 #  stage: dev
@@ -63,6 +64,7 @@ provider:
 
 functions:
   translate:
+    name: translate-function-${sls:stage}
     handler: functions/translate_handler.translate
     events:
       - http:
