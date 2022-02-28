@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "nodemon": "^2.0.15",
+    "serverless-offline": "^8.5.0"
+  },
+  "scripts": {
+    "start": "nodemon -e py --exec sls offline"
+  }
+}

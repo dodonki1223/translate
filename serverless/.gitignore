@@ -18,3 +18,9 @@ var/
 
 # Serverless directories
 .serverless
+
+# Python cache igunore
+__pycache__
+
+# Node modules ignore
+node_modules
