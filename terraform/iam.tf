@@ -26,7 +26,7 @@ data "aws_iam_policy_document" "translate_create_log_group" {
       "logs:CreateLogStream",
       "logs:PutLogEvents"
     ]
-    resources = [format("arn:aws:logs:%s:%s:log-group:%s:*", var.aws_region, var.account_id, aws_cloudwatch_log_group.translate_function.name)]
+    resources = [format("arn:aws:logs:%s:%s:log-group:%s:*", var.aws_region, var.account_id, local.log_group_name)]
   }
 }
 
