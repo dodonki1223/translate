@@ -21,8 +21,8 @@ provider "aws" {
   profile = var.aws_profile
   default_tags {
     tags = {
-      Component   = var.component
       Application = var.application
+      Environment = terraform.workspace
     }
   }
 }
