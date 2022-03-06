@@ -20,6 +20,11 @@ service: translate-function
 # Check out our docs for more details
 frameworkVersion: '3'
 
+custom:
+  application: 'translate'
+  logGroupName: ${ssm:/translate/log/translate_function_${sls:stage}}
+  iamRoleName: ${ssm:/translate/iam_role/lambda_function_${sls:stage}}
+
 provider:
   name: aws
   runtime: python3.9
@@ -27,6 +32,9 @@ provider:
   profile: serverless
   endpointType: regional
   apiName: translate-api-${sls:stage}
+  iam:
+    role: ${self:custom.iamRoleName}
+
 
 # you can overwrite defaults here
 #  stage: dev
@@ -121,6 +129,20 @@ functions:
 #     NewOutput:
 #       Description: "Description for the output"
 #       Value: "Some output value"
+
+resources:
+  extensions:
+    TranslateLogGroup:
+      Properties:
+        LogGroupName: ${self:custom.logGroupName}
+        RetentionInDays: 30
+        Tags: 
+          - key: Application
+            Value: '${self:custom.application}'
+          - key: Environment
+            Value: '${sls:stage}'
+          - key: Description
+            Value: 'CloudWatch log group for creating ${self:custom.application} resources'
 
 plugins:
   - serverless-offline
