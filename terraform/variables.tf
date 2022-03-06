@@ -11,6 +11,12 @@ variable "aws_profile" {
   default     = "terraform"
 }
 
+variable "account_id" {
+  description = "AWS account id"
+  type        = string
+  default     = "300367504550"
+}
+
 variable "application" {
   description = "Application Name"
   type        = string
