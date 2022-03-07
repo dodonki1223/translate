@@ -1,14 +1,3 @@
-data "aws_iam_policy_document" "translate_cloudwatch" {
-  statement {
-    effect = "Allow"
-    actions = [
-      "cloudwatch:GetMetricStatistics",
-      "cloudwatch:ListMetrics",
-    ]
-    resources = ["*"]
-  }
-}
-
 data "aws_iam_policy_document" "translate_log_group" {
   statement {
     effect = "Allow"
@@ -30,48 +19,10 @@ data "aws_iam_policy_document" "translate_create_log_group" {
   }
 }
 
-data "aws_iam_policy_document" "translate_s3" {
-  statement {
-    effect = "Allow"
-    actions = [
-      "s3:GetBucketLocation",
-      "s3:ListAllMyBuckets",
-      "s3:ListBucket"
-    ]
-    resources = ["*"]
-  }
-}
-
-data "aws_iam_policy_document" "translate_iam" {
-  statement {
-    effect = "Allow"
-    actions = [
-      "iam:GetRole",
-      "iam:ListRoles"
-    ]
-    resources = ["*"]
-  }
-}
-
-data "aws_iam_policy_document" "translate_policy" {
-  statement {
-    effect = "Allow"
-    actions = [
-      "comprehend:DetectDominantLanguage",
-      "translate:*"
-    ]
-    resources = ["*"]
-  }
-}
-
 data "aws_iam_policy_document" "translate_lambda" {
   source_policy_documents = [
-    data.aws_iam_policy_document.translate_cloudwatch.json,
     data.aws_iam_policy_document.translate_log_group.json,
-    data.aws_iam_policy_document.translate_create_log_group.json,
-    data.aws_iam_policy_document.translate_s3.json,
-    data.aws_iam_policy_document.translate_iam.json,
-    data.aws_iam_policy_document.translate_policy.json
+    data.aws_iam_policy_document.translate_create_log_group.json
   ]
 }
 
@@ -110,4 +61,13 @@ data "aws_iam_policy" "dynamodb_full_access" {
 resource "aws_iam_role_policy_attachment" "dynamodb_full_access" {
   role       = aws_iam_role.translate_lambda_function.name
   policy_arn = data.aws_iam_policy.dynamodb_full_access.arn
+}
+
+data "aws_iam_policy" "translate_full_access" {
+  arn = "arn:aws:iam::aws:policy/TranslateFullAccess"
+}
+
+resource "aws_iam_role_policy_attachment" "translate_full_access" {
+  role       = aws_iam_role.translate_lambda_function.name
+  policy_arn = data.aws_iam_policy.translate_full_access.arn
 }
