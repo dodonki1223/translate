@@ -148,6 +148,20 @@ resources:
             Value: '${sls:stage}'
           - key: Description
             Value: 'CloudWatch log group for creating ${self:custom.application} resources'
+  Resources:
+    usersTable:
+      Type: AWS::DynamoDB::Table
+      Properties:
+        TableName: translate-history
+        AttributeDefinitions:
+          - AttributeName: timestamp
+            AttributeType: S
+        KeySchema:
+          - AttributeName: timestamp
+            KeyType: HASH
+        ProvisionedThroughput:
+          ReadCapacityUnits: 1
+          WriteCapacityUnits: 1
 
 plugins:
   - serverless-offline
