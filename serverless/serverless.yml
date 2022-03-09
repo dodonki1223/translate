@@ -136,6 +136,8 @@ functions:
 #       Value: "Some output value"
 
 resources:
+  Conditions:
+    IsProd: !Equals ['${sls:stage}', 'prod']
   extensions:
     TranslateLogGroup:
       Properties:
@@ -149,10 +151,10 @@ resources:
           - key: Description
             Value: 'CloudWatch log group for creating ${self:custom.application} resources'
   Resources:
-    usersTable:
+    translateHistory:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: translate-history
+        TableName: !If [ IsProd, 'translate-history', 'translate-history-${sls:stage}' ]
         AttributeDefinitions:
           - AttributeName: timestamp
             AttributeType: S
