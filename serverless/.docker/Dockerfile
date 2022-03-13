@@ -23,13 +23,17 @@ COPY --from=python /lib/aarch64-linux-gnu/libexpat.so.1 /usr/lib/aarch64-linux-g
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
-# hadolint ignore=DL3008
-RUN apt-get update -qq \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
+# 欲しいツールは .docker/Aptfile ファイルに記載しておくことで自動でインストールされる
+COPY .docker/Aptfile /tmp/Aptfile
+
+# hadolint ignore=DL3008, SC2002
+RUN apt-get update -qq && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
     ca-certificates \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* \
-    && truncate -s 0 /var/log/*log
+    $(cat /tmp/Aptfile | xargs) && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
+    truncate -s 0 /var/log/*log
 
 # バージョンを docker-compose.yml から取得し Serverless Framework をグローバルにインストールする
 ARG SEVERLESS_FRAMEWORK_VERSION
