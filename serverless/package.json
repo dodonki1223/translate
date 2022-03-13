@@ -5,7 +5,7 @@
     "serverless-python-requirements": "^5.3.1"
   },
   "scripts": {
-    "start": "AWS_PROFILE=terraform nodemon -e py --exec sls offline",
+    "start": "nodemon -e py --exec sls offline",
     "deploy": "sls deploy"
   }
 }

@@ -24,3 +24,6 @@ __pycache__
 
 # Node modules ignore
 node_modules
+
+# ignore .env
+.env

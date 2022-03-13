@@ -28,8 +28,7 @@ custom:
 provider:
   name: aws
   runtime: python3.9
-  region: ap-northeast-1
-  profile: serverless
+  region: ${env:AWS_DEFAULT_REGION}
   endpointType: regional
   apiName: translate-api-${sls:stage}
   iam:

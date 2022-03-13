@@ -1,0 +1,32 @@
+version: "3.8"
+
+x-app: &app
+  build: 
+    context: .
+    dockerfile: ./.docker/Dockerfile
+    args:
+      NODE_VERSION: 17.0.0
+      PYTHON_VERSION: 3.9.2
+      UBUNTU_VERSION: 20.04
+      SEVERLESS_FRAMEWORK_VERSION: 3.7.4
+  env_file:
+    - ./.docker/.env
+  volumes:
+    - .:/app:cached
+    - node_modules:/app/node_modules
+
+services:
+  offline:
+    <<: *app
+    command: yarn start --host 0.0.0.0
+    ports:
+      - '3000:3000'
+
+  serverless:
+    <<: *app
+    stdin_open: true
+    tty: true
+    command: bash
+
+volumes:
+  node_modules:
