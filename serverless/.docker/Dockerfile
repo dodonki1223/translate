@@ -42,3 +42,6 @@ RUN npm install -g serverless@$SEVERLESS_FRAMEWORK_VERSION
 WORKDIR /app
 
 COPY . .
+
+# Node.js と Python の依存関係をインストールする
+RUN .docker/bin/install_dependencies

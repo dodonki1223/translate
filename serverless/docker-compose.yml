@@ -20,7 +20,7 @@ services:
   offline:
     <<: *app
     command: >
-      bash -c ".docker/bin/install &&
+      bash -c ".docker/bin/install_dependencies &&
                yarn start --host 0.0.0.0"
     ports:
       - '3000:3000'
@@ -32,8 +32,8 @@ services:
     environment:
       HISTFILE: .docker/.bash_history
     command: >
-      bash -c ".docker/bin/version &&
-               .docker/bin/install &&
+      bash -c ".docker/bin/install_dependencies &&
+               .docker/bin/version &&
                bash"
 
 volumes:
