@@ -18,7 +18,9 @@ x-app: &app
 services:
   offline:
     <<: *app
-    command: yarn start --host 0.0.0.0
+    command: >
+      bash -c ".docker/bin/install &&
+               yarn start --host 0.0.0.0"
     ports:
       - '3000:3000'
 
@@ -26,7 +28,10 @@ services:
     <<: *app
     stdin_open: true
     tty: true
-    command: bash
+    command: >
+      bash -c ".docker/bin/version &&
+               .docker/bin/install &&
+               bash"
 
 volumes:
   node_modules:

@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo Install dependencies... && \
+yarn install && \
+pip install -r requirements.txt
