@@ -28,6 +28,8 @@ services:
     <<: *app
     stdin_open: true
     tty: true
+    environment:
+      HISTFILE: .docker/.bash_history
     command: >
       bash -c ".docker/bin/version &&
                .docker/bin/install &&
