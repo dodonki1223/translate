@@ -13,6 +13,7 @@ x-app: &app
     - ./.docker/.env
   volumes:
     - .docker/.bashrc:/root/.bashrc
+    - .docker/.bash_history:/root/.bash_history
     - .:/app:cached
     - node_modules:/app/node_modules
 
@@ -30,7 +31,7 @@ services:
     stdin_open: true
     tty: true
     environment:
-      HISTFILE: .docker/.bash_history
+      HISTFILE: /root/.bash_history
     command: >
       bash -c ".docker/bin/install_dependencies &&
                .docker/bin/version &&
