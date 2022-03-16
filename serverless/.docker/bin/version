@@ -4,4 +4,5 @@ echo [Version info] && \
 echo "Node.js             ": $(node -v | tr -d v) && \
 echo "Yarn                ": $(yarn -v) && \
 echo "Python              ": $(python --version | tr -d 'Python ') && \
+echo "AWS CLI             ": $(aws --version | awk -F '/' '{print $2}' | tr -d ' Python')
 echo "Serverless Framework": $(sls -v | grep Framework | tr -d 'Framework Core: ')

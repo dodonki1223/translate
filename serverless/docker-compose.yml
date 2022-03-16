@@ -45,6 +45,7 @@ services:
       HISTFILE: /root/.bash_history
     command: >
       bash -c ".docker/bin/install_dependencies &&
+               .docker/bin/setup_aws_cli &&
                .docker/bin/version &&
                bash"
 
