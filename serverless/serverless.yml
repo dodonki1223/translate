@@ -25,6 +25,16 @@ custom:
   logGroupName: ${ssm:/translate/log/translate_function_${sls:stage}}
   iamRoleName: ${ssm:/translate/iam_role/lambda_function_${sls:stage}}
 
+  dynamodb:
+    stages:
+      - dev
+    start:
+      port: 8000
+      inMemory: true
+      heapInitial: 200m
+      heapMax: 1g
+      migrate: true
+
 provider:
   name: aws
   runtime: python3.9
@@ -153,7 +163,10 @@ resources:
     translateHistory:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: !If [ IsProd, 'translate-history', 'translate-history-${sls:stage}' ]
+        # 本当は以下のような感じで環境ごとテーブル名を変えたいが sls offline start で以下のようなエラーがでるため諦める……
+        #   InvalidParameterType: Expected params.TableName to be a string
+        # TableName: !If [ IsProd, 'translate-history', 'translate-history-${sls:stage}' ]
+        TableName: 'translate-history-${sls:stage}'
         AttributeDefinitions:
           - AttributeName: timestamp
             AttributeType: S
@@ -165,5 +178,6 @@ resources:
           WriteCapacityUnits: 1
 
 plugins:
-  - serverless-offline
   - serverless-python-requirements
+  - serverless-dynamodb-local
+  - serverless-offline

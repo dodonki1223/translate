@@ -25,8 +25,11 @@ __pycache__
 # Node modules ignore
 node_modules
 
-# ignore .env
+# DynamoDB Local files ignore
+.dynamodb
+
+# .env ignore 
 .env
 
-# ignore container history file
+# container history file ignore 
 .docker/.bash_history
