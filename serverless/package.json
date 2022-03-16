@@ -1,5 +1,6 @@
 {
   "devDependencies": {
+    "dynamodb-admin": "^4.1.0",
     "nodemon": "^2.0.15",
     "serverless-dynamodb-local": "^0.2.40",
     "serverless-offline": "^8.5.0",
@@ -7,6 +8,7 @@
   },
   "scripts": {
     "start": "sls dynamodb install && nodemon -e py --exec sls offline start",
+    "dynamodb-admin": "dynamodb-admin",
     "deploy": "sls deploy"
   }
 }
