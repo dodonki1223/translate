@@ -29,12 +29,22 @@ COPY .docker/Aptfile /tmp/Aptfile
 # hadolint ignore=DL3008, SC2002
 RUN apt-get update -qq && \
     DEBIAN_FRONTEND=noninteractive apt-get install -yq --no-install-recommends \
+    curl \
+    unzip \
+    less \
     ca-certificates \
     default-jre \
     $(cat /tmp/Aptfile | xargs) && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* && \
     truncate -s 0 /var/log/*log
+
+# AWS CLI を公式のドキュメントのARM版のインストール方法に則って行う
+#   https://docs.aws.amazon.com/ja_jp/cli/latest/userguide/getting-started-install.html
+RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-aarch64.zip" -o "/tmp/awscliv2.zip" \
+    && unzip /tmp/awscliv2.zip -d /tmp \
+    && /tmp/aws/install \
+    && rm -rf /tmp/awscliv2.zip /tmp/aws
 
 # バージョンを docker-compose.yml から取得し Serverless Framework をグローバルにインストールする
 ARG SEVERLESS_FRAMEWORK_VERSION
