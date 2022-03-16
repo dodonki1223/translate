@@ -27,6 +27,16 @@ services:
     ports:
       - '3000:3000'
 
+  dynamodb-admin:
+    <<: *app
+    command: >
+      bash -c ".docker/bin/install_dependencies &&
+               .docker/bin/start_dynamodb-admin"
+    depends_on:
+      - offline
+    ports:
+      - '8001:8001'
+
   serverless:
     <<: *app
     stdin_open: true
