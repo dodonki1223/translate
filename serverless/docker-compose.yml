@@ -48,6 +48,8 @@ services:
                .docker/bin/setup_aws_cli &&
                .docker/bin/version &&
                bash"
+    profiles:
+      - development
 
 volumes:
   node_modules:
