@@ -54,7 +54,9 @@ provider:
   apiName: translate-api-${sls:stage}
   iam:
     role: ${self:custom.iamRoleName}
-
+  tags:
+    Application: '${self:custom.application}'
+    Environment: '${sls:stage}'
 
 # you can overwrite defaults here
 #  stage: dev
@@ -94,6 +96,7 @@ functions:
   translate:
     name: translate-function-${sls:stage}
     handler: functions/translate_handler.translate
+    description: 'Providing a function to convert English to Japanese'
     environment:
       DYNAMODB_ENDPOINT: ${param:dynamodbEndpoint}
       TRANSLATE_HISTORY_TABLE: ${param:translateHistoryTable}
@@ -170,7 +173,7 @@ resources:
           - key: Environment
             Value: '${sls:stage}'
           - key: Description
-            Value: 'CloudWatch log group for creating ${self:custom.application} resources'
+            Value: 'CloudWatch log group for created translate-function-${sls:stage}'
   Resources:
     translateHistory:
       Type: AWS::DynamoDB::Table
