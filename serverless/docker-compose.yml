@@ -23,7 +23,7 @@ services:
     <<: *app
     command: >
       bash -c ".docker/bin/install_dependencies &&
-               yarn start --host 0.0.0.0"
+               yarn start --host 0.0.0.0 --stage ${STAGE:-dev}"
     ports:
       - '3000:3000'
 
