@@ -24,7 +24,10 @@ custom:
   application: 'translate'
   logGroupName: ${ssm:/translate/log/translate_function_${sls:stage}}
   iamRoleName: ${ssm:/translate/iam_role/lambda_function_${sls:stage}}
-
+  serverless-layers:
+    functions:
+      - translate
+    dependenciesPath: ./layers/requirements.txt
   dynamodb:
     stages:
       - dev
@@ -45,6 +48,16 @@ params:
   dev:
     dynamodbEndpoint: http://localhost:8000
     translateHistoryTable: translate-history-${sls:stage}
+
+package:
+  individually: true
+  exclude:
+    - .docker/**
+    - .dynamodb/**
+    - layers/**
+    - yarn.lock
+    - .tool-versions
+    - docker-compose.yml
 
 provider:
   name: aws
@@ -192,6 +205,7 @@ resources:
           WriteCapacityUnits: 1
 
 plugins:
+  - serverless-layers
   - serverless-python-requirements
   - serverless-dynamodb-local
   - serverless-offline
