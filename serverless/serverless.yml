@@ -102,6 +102,5 @@ resources:
 
 plugins:
   - serverless-layers
-  - serverless-python-requirements
   - serverless-dynamodb-local
   - serverless-offline
