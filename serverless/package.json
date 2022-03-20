@@ -3,6 +3,7 @@
     "dynamodb-admin": "^4.1.0",
     "nodemon": "^2.0.15",
     "serverless-dynamodb-local": "^0.2.40",
+    "serverless-layers": "^2.4.0",
     "serverless-offline": "^8.5.0",
     "serverless-python-requirements": "^5.3.1"
   },
