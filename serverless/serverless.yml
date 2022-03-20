@@ -51,6 +51,8 @@ provider:
   runtime: python3.9
   region: ${env:AWS_REGION}
   endpointType: regional
+  deploymentBucket:
+    name: translate-sls
   apiName: translate-api-${sls:stage}
   iam:
     role: ${self:custom.iamRoleName}
