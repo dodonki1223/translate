@@ -1,0 +1,35 @@
+// devcontainer.json reference: https://code.visualstudio.com/docs/remote/devcontainerjson-reference
+// README.md: https://github.com/microsoft/vscode-dev-containers/tree/v0.158.0/containers/docker-existing-docker-compose
+{
+	// Dev Container の表示名
+	"name": "Serverless Framework Development", 
+
+	// docker-compose.yml のファイルパスを記載する
+	// extend.yml を追加することで追加の設定と上書き設定を追加することができる
+	"dockerComposeFile": [
+		"../docker-compose.yml",
+		"docker-compose.extend.yml"
+	],
+
+	// docker-compose.yml の接続サービス名
+	"service": "offline",
+
+	// Workspaceのフォルダを指定（Attachした時のデフォルト表示フォルダ設定）
+	"workspaceFolder": "/app",
+
+	// コンテナ内でインストールする VS Codeの拡張機能ID
+	"extensions": [
+		// Node.js 関連
+		"waderyan.nodejs-extension-pack",
+		"leizongmin.node-module-intellisense",
+		// Serverless Framework 関連
+		"rafwilinski.serverless-vscode-snippets",
+		"blaxk.serverless-command",
+		// Python 関連
+		"ms-python.python",
+		"ms-python.vscode-pylance",
+		"ms-toolsai.jupyter",
+		"ms-toolsai.jupyter-keymap",
+		"ms-toolsai.jupyter-renderers",
+	],
+}

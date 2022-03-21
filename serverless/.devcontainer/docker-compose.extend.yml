@@ -1,0 +1,14 @@
+version: "3.8"
+
+# 通常は docker-compose up -d && docker-compose run --rm serverless で開発する。
+# Remote Container で開発する時は offline コンテナを使って開発するため、AWS CLI の設定された状態を
+# 再現するため起動時のコマンドを別途書き換える。
+# offline コンテナを使う理由は VS Code 上で offline コンテナに attach してログを確認しながら開発し
+# たいためである。開発用のコンテナの serverless だと offline コンテナのログを VS Code 上で確認でき
+# ないので上書きをする。
+services:
+  offline:
+    command: >
+      bash -c ".docker/bin/install_dependencies &&
+               .docker/bin/setup_aws_cli &&
+               yarn start --host 0.0.0.0"
