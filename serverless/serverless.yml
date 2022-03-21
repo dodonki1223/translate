@@ -101,6 +101,17 @@ resources:
         ProvisionedThroughput:
           ReadCapacityUnits: 1
           WriteCapacityUnits: 1
+  Outputs:
+    LambdaFunctionName:
+      Value: 
+        "Ref": TranslateLambdaFunction
+      Export:
+        Name: lambda-function-name-${sls:stage}
+    LambdaFunctionArn:
+      Value: 
+        "Fn::GetAtt": [TranslateLambdaFunction, Arn]
+      Export:
+        Name: lambda-function-arn-${sls:stage}
 
 plugins:
   - serverless-layers
