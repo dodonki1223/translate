@@ -49,6 +49,8 @@ provider:
   deploymentBucket:
     name: translate-sls
   apiName: translate-api-${sls:stage}
+  apiGateway:
+    description: 'API Gateway for created translate-function-${sls:stage}'
   iam:
     role: ${self:custom.iamRoleName}
   tags:
