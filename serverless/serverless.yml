@@ -28,7 +28,7 @@ params:
     dynamodbEndpoint: https://dynamodb.ap-northeast-1.amazonaws.com
     translateHistoryTable: translate-history-${sls:stage}
   dev:
-    dynamodbEndpoint: http://localhost:8000
+    dynamodbEndpoint: ${env:DYNAMODB_ENDPOINT, 'http://localhost:8000'}
     translateHistoryTable: translate-history-${sls:stage}
 
 package:
