@@ -28,10 +28,11 @@ services:
       - '3000:3000'
 
   dynamodb-admin:
-    <<: *app
-    command: >
-      bash -c ".docker/bin/install_dependencies &&
-               .docker/bin/start_dynamodb-admin"
+    build: 
+      context: .
+      dockerfile: ./.docker/dynamodb-admin/Dockerfile
+    env_file:
+      - ./.docker/.env
     depends_on:
       - offline
     ports:
