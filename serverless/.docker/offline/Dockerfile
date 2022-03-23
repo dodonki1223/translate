@@ -24,7 +24,7 @@ COPY --from=python /lib/aarch64-linux-gnu/libexpat.so.1 /usr/lib/aarch64-linux-g
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 
 # 欲しいツールは .docker/Aptfile ファイルに記載しておくことで自動でインストールされる
-COPY .docker/Aptfile /tmp/Aptfile
+COPY .docker/offline/Aptfile /tmp/Aptfile
 
 # hadolint ignore=DL3008, SC2002
 RUN apt-get update -qq && \
