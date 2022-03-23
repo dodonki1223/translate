@@ -11,14 +11,14 @@ x-app: &app
       SEVERLESS_FRAMEWORK_VERSION: '3.7.4'
   env_file:
     - ./.docker/.env
-  volumes:
-    - .:/app:cached
-    - node_modules:/app/node_modules
-    - dynamodb:/app/.dynamodb
 
 services:
   offline:
     <<: *app
+    volumes:
+      - .:/app:cached
+      - node_modules:/app/node_modules
+      - dynamodb:/app/.dynamodb
     command: >
       bash -c ".docker/bin/install_dependencies &&
                yarn start --host 0.0.0.0 --stage ${STAGE:-dev}"
@@ -43,6 +43,9 @@ services:
     environment:
       HISTFILE: /root/.bash_history
     volumes:
+      - .:/app:cached
+      - node_modules:/app/node_modules
+      - dynamodb:/app/.dynamodb
       - .docker/runner/.bashrc:/root/.bashrc
       - .docker/runner/.bash_history:/root/.bash_history
     command: >
