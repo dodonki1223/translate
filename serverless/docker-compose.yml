@@ -12,8 +12,6 @@ x-app: &app
   env_file:
     - ./.docker/.env
   volumes:
-    - .docker/.bashrc:/root/.bashrc
-    - .docker/.bash_history:/root/.bash_history
     - .:/app:cached
     - node_modules:/app/node_modules
     - dynamodb:/app/.dynamodb
@@ -38,16 +36,19 @@ services:
     ports:
       - '8001:8001'
 
-  serverless:
+  runner:
     <<: *app
     stdin_open: true
     tty: true
     environment:
       HISTFILE: /root/.bash_history
+    volumes:
+      - .docker/runner/.bashrc:/root/.bashrc
+      - .docker/runner/.bash_history:/root/.bash_history
     command: >
       bash -c ".docker/bin/install_dependencies &&
                .docker/bin/setup_aws_cli &&
-               .docker/bin/version &&
+               .docker/runner/version &&
                bash"
     profiles:
       - development

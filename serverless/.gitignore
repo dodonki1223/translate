@@ -32,4 +32,4 @@ node_modules
 .env
 
 # container history file ignore 
-.docker/.bash_history
+.docker/runner/.bash_history
