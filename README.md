@@ -65,7 +65,7 @@ translate-slsのアクセスの変更に成功しました
 これからの作業は terraform のディレクトリで行うので必ず移動してください。
 
 ```shell
-$ cd terraform
+$ cd translate/terraform
 ```
 
 #### Terraform をインストールする
@@ -130,6 +130,53 @@ Terraform used the selected providers to generate the following execution plan. 
 ・
 Apply complete! Resources: 7 added, 0 changed, 0 destroyed.
 ```
+
+### Serverless Framework の環境構築
+
+Serverless Framework は基本的に Docker で開発を行うため、Docker が使える状態にしておいてください。
+
+これからの作業は serverless のディレクトリで行うので必ず移動してください。
+
+```shell
+$ cd translate/serverless
+```
+
+#### 環境変数を設定する
+
+テンプレートファイルをコピーし環境変数を設定します。
+
+```shell
+$ cp .docker/.env.sample .docker/.env
+```
+
+| 環境変数名            | 説明                                                                                      |
+|:----------------------|:------------------------------------------------------------------------------------------|
+| AWS_ACCESS_KEY_ID     | IAM ユーザーまたはロールに関連付けられる AWS アクセスキー                                 |
+| AWS_SECRET_ACCESS_KEY | AWS アクセスキーに関連付けられているシークレットキー（AWS アクセスキーのパスワードのこと）|
+| AWS_REGION            | profile 設定のリージョン設定                                                              |
+| DYNAMODB_LOCAL_PORT   | ローカルで実行している DynamoDB Local へアクセスするためのポート番号                      |
+
+#### 開発環境を立ち上げる
+
+Docker のコマンドを実行し開発環境を立ち上げます。
+
+```shell
+$ docker-compose up
+・
+・
+・
+offline_1         | Server ready: http://0.0.0.0:3000 🚀
+```
+
+[http://localhost:3000/dev/translate?input_text=おはよう](http://localhost:3000/dev/translate?input_text=おはよう) へアクセスし `Good morning` と返ってくれば API Gateway, Lambda, DynamoDB のローカル実行が出来ています。
+
+![translate_web_api_result](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/03_translate_web_api_result.png)
+
+また [http://localhost:8001](http://localhost:8001) にアクセスし dynamodb-admin が表示されていることも確認しておきましょう。
+
+![dynamodb_admin](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/04_dynamodb_admin.png)
+
+これでローカルの環境構築完了です！
 
 ## その他
 
