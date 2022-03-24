@@ -18,7 +18,10 @@
 
 AWS のリソースは Terraform で管理されているものと Serverless Framework で管理されているものがあります。  
 Terraform の tfstate ファイル（現在の状態を表すファイル）は複数人で開発することを想定しているため AWS S3 に保存して開発を行います。  
-また Serverless Framework もデプロイするために AWS S3 を使用する（CloudFormation, Lambda のコードを zip化されたものなどを指す。 .serverless フォルダ配下に作成されているファイル群）ため作成が必要です。
+また Serverless Framework もデプロイするために AWS S3 を使用する（CloudFormation, Lambda のコードを zip化されたものなどを指す。 .serverless フォルダ配下に作成されているファイル群）ため作成が必要です。  
+
+S3 の作成後、Terraform と Serverless Framework の設定を順番に行っていきます。  
+Terraform と Serverless Framework の連携のため、 **設定する順番がとても重要** になってきます。 **必ず Terraform から設定をする必要** があります。
 
 ### Terraform と Serverless Framework で使用する S3 の作成
 
@@ -54,15 +57,51 @@ translate-slsのアクセスの変更に成功しました
 | tfstate の格納バケット                  | translate-terraform |
 | Serverless Framework デプロイ用バケット | terraform-sls       |
 
-### Terraform で AWS に必要なリソースを作成する
+### Terraform の環境構築
 
-Serverless Framework と連携するために AWS Systems Manager Parameter Store を使用する必要があるため、予め開発用のパラメータをセットしておく必要があります。  
-また Terraform で環境の切り分けについてはそれぞれの環境で差異があるわけではないので Workspace を使うことを前提としています。  
+ローカル環境であっても Serverless Framework と連携するために AWS Systems Manager Parameter Store を使用する必要があるため、予め開発用のパラメータをセットしておく必要があります。  
+なので Serverless Framework の開発を始める前にまずは AWS に必要なリソースを Terraform を使って作成していきます。
+
+これからの作業は terraform のディレクトリで行うので必ず移動してください。
+
+```shell
+$ cd terraform
+```
+
+#### Terraform をインストールする
+
+asdf などのパッケージマネージャーを使用して Terraform をインストールして使える状態にします。
+
+```shell
+# terraform の plugin を追加する
+$ asdf plugin add terraform
+updating plugin repository...remote: Enumerating objects: 41, done.
+remote: Counting objects: 100% (41/41), done.
+remote: Compressing objects: 100% (36/36), done.
+remote: Total 41 (delta 22), reused 14 (delta 5), pack-reused 0
+Unpacking objects: 100% (41/41), 40.13 KiB | 334.00 KiB/s, done.
+From https://github.com/asdf-vm/asdf-plugins
+   8ef69e3..fe90d7a  master     -> origin/master
+HEAD is now at fe90d7a feat: add asdf-gcc-arm-none-eabi plugin (#565)
+
+# terraform をインストールする
+$ asdf install terraform
+```
+
+#### Terraform の初期化コマンドを実行する
+
+terraform 内で使用している plugin などのバイナリファイルをダウンロードします。
+
+```shell
+$ terraform init 
+```
+
+#### workspace を作成する
+
+環境の切り分けについてはそれぞれの環境で差異があるわけではないので workspace を使うことを前提としています。  
 dev, stg, prod の環境をそれぞれ作成しておくと良いでしょう。
 
 注意：workspace は必ず `dev` 環境を作成しないとローカル実行もできないです！
-
-#### workspace を作成する
 
 ```shell
 $ terraform workspace new dev
