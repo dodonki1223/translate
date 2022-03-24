@@ -54,6 +54,44 @@ translate-slsのアクセスの変更に成功しました
 | tfstate の格納バケット                  | translate-terraform |
 | Serverless Framework デプロイ用バケット | terraform-sls       |
 
+### Terraform で AWS に必要なリソースを作成する
+
+Serverless Framework と連携するために AWS Systems Manager Parameter Store を使用する必要があるため、予め開発用のパラメータをセットしておく必要があります。  
+また Terraform で環境の切り分けについてはそれぞれの環境で差異があるわけではないので Workspace を使うことを前提としています。  
+dev, stg, prod の環境をそれぞれ作成しておくと良いでしょう。
+
+注意：workspace は必ず `dev` 環境を作成しないとローカル実行もできないです！
+
+#### workspace を作成する
+
+```shell
+$ terraform workspace new dev
+Created and switched to workspace "dev"!
+
+You're now on a new, empty workspace. Workspaces isolate their state,
+so if you run "terraform plan" Terraform will not see any existing state
+for this configuration.
+```
+
+#### 作成した workspace を選択する
+
+```shell
+$ terraform workspace select dev
+Switched to workspace "dev".
+```
+
+#### Terraform で AWS のリソースを作成する
+
+```shell
+$ terraform apply -parallelism=30
+Terraform used the selected providers to generate the following execution plan. Resource actions are indicated with the following symbols:
+  + create
+・
+・
+・
+Apply complete! Resources: 7 added, 0 changed, 0 destroyed.
+```
+
 ## その他
 
 ちなみにですが [AWS ハンズオン資料](https://aws.amazon.com/jp/aws-jp-introduction/aws-jp-webinar-hands-on/) に [AWS SAM を使ってテンプレートからサーバーレスな環境を構築する](https://pages.awscloud.com/event_JAPAN_Ondemand_Hands-on-for-Beginners-Serverless-2_CP.html) というハンズオン資料が既にあり SAM を使用して Infrastructure as Code（IaC）化されています。  
