@@ -178,6 +178,26 @@ offline_1         | Server ready: http://0.0.0.0:3000 🚀
 
 これでローカルの環境構築完了です！
 
+## Terraform と Serverless Framework について
+
+![relationship_between_terraform_and_serverless_framework](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/01_relationship_between_terraform_and_serverless_framework.png)
+
+開発に入る前にまずはこのリポジトリでの Terraform と Serverless Framework についての説明をします。  
+AWS のリソースに関しては Terraform が管理しているものと Serverless Framework が管理しているものがあります。
+
+### Terraform の管理化リソース
+
+Terraform が管理しているリソースは IAM ロール, パラメータストアになります。  
+権限は Serverless Framework で管理せずに Terraform で管理しています。
+
+![terraform_resources](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/05_terraform_resources.png)
+
+### Serverless Framework の管理化リソース
+
+Serverless Framework が管理しているリソースは API Gateway, Lambda, DynamoDB, CloudWatch Logs になります。
+
+![serverless_framework](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/06_serverless_framework_resources.png)
+
 ## その他
 
 ちなみにですが [AWS ハンズオン資料](https://aws.amazon.com/jp/aws-jp-introduction/aws-jp-webinar-hands-on/) に [AWS SAM を使ってテンプレートからサーバーレスな環境を構築する](https://pages.awscloud.com/event_JAPAN_Ondemand_Hands-on-for-Beginners-Serverless-2_CP.html) というハンズオン資料が既にあり SAM を使用して Infrastructure as Code（IaC）化されています。  
