@@ -198,6 +198,40 @@ Serverless Framework が管理しているリソースは API Gateway, Lambda, D
 
 ![serverless_framework](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/06_serverless_framework_resources.png)
 
+### Terraform と Serverless Framework の連携について
+
+Terraform と Serverless Framework の連携に関してですが「Terraform → Serverless Framework」と「Serverless Framework → Terraform」の２種類がありそれぞれちゃんと連携を考えないといけません。  
+連携するためにデプロイ順もちゃんと考慮する必要があるのでどうやって連携するのかということだけをちゃんと理解出来るようになっていれば応用がきくのでしっかりと概念を頭に入れておくとよいでしょう。  
+
+このリポジトリでは「Terraform → Serverless Framework」の連携だけ実装されています。ただしサンプルとして「Serverless Framework → Terraform」も連携出来ることも確認済みなのでいつでも連携可能です。
+
+### Terraform → Serverless Framework 連携
+
+Serverless Framework の公式サイトに Terraform との連携方法について書かれている記事がありそれを参考にして連携しています。  
+Terraform で作成したリソースの arn をパラメータストアに設定し設定したパラメータストアから arn を取得して Serverless Framework で使用します。
+
+serverless.yml のソースコード上だと以下のような記述で連携しています。
+
+```yml
+custom:
+  iamRoleName: ${ssm:/translate/iam_role/lambda_function_${sls:stage}}
+```
+
+詳しくは以下の記事を参考にしてください。
+
+- [The definitive guide to using Terraform with the Serverless Framework](https://www.serverless.com/blog/definitive-guide-terraform-serverless/)
+
+### Serverless Framework → Terraform 連携
+
+Serverless Framework は CloudFormation を使用してデプロイするので CloudFormation が出力した output を使用して Terraform で連携させます。  
+aws_cloudformation_export を使用することで CloudFormation が出力した情報を読み込むことができるようになるので Terraform でも連携が可能になります。
+
+```terraform 
+data "aws_cloudformation_export" "lambda_function_arn" {
+  name = format("lambda-function-arn-%s", terraform.workspace)
+}
+```
+
 ## その他
 
 ちなみにですが [AWS ハンズオン資料](https://aws.amazon.com/jp/aws-jp-introduction/aws-jp-webinar-hands-on/) に [AWS SAM を使ってテンプレートからサーバーレスな環境を構築する](https://pages.awscloud.com/event_JAPAN_Ondemand_Hands-on-for-Beginners-Serverless-2_CP.html) というハンズオン資料が既にあり SAM を使用して Infrastructure as Code（IaC）化されています。  
