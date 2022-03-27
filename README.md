@@ -232,6 +232,17 @@ data "aws_cloudformation_export" "lambda_function_arn" {
 }
 ```
 
+## 開発
+
+開発は Terraform と Serverless Framework によって方法が違うため、注意して下さい。  
+Serverless Framework に関しては複数の開発方法があるため、好みによって使い分けて下さい。
+
+### Terraform 
+
+開発環境の構築が終わっていればそのまま開発することができます。  
+
+Terraform の開発は `translate/terraform` のディレクトリに移動し、Terraform の通常通りの開発と同じく `terraform init`, `terraform plan`, `terraform apply` などのコマンドを使用して開発を行って下さい。
+
 ## その他
 
 ちなみにですが [AWS ハンズオン資料](https://aws.amazon.com/jp/aws-jp-introduction/aws-jp-webinar-hands-on/) に [AWS SAM を使ってテンプレートからサーバーレスな環境を構築する](https://pages.awscloud.com/event_JAPAN_Ondemand_Hands-on-for-Beginners-Serverless-2_CP.html) というハンズオン資料が既にあり SAM を使用して Infrastructure as Code（IaC）化されています。  
