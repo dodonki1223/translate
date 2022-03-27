@@ -243,6 +243,38 @@ Serverless Framework に関しては複数の開発方法があるため、好�
 
 Terraform の開発は `translate/terraform` のディレクトリに移動し、Terraform の通常通りの開発と同じく `terraform init`, `terraform plan`, `terraform apply` などのコマンドを使用して開発を行って下さい。
 
+### Serverless Framework 
+
+![local_development_environment](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/02_local_development_environment.png)
+
+Serverless Framework の開発は２通りあります。  
+Docker のコンテナ内で開発することは変わらないのですが、VSCode を使った [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) での開発と開発用のコンテナにログインして開発する方法があります。
+
+Serverless Framework の開発は translate/serverless のディレクトリに移動して開発を行います。
+
+#### なぜ Docker を使って開発を行っているのか？
+
+DynamoDB Local が M1 Mac だと動作しなかったため仕方なく Docker 化して開発することにしました。
+DynamoDB Local で使用されている SQLLite のライブラリが arm64 に対応していないため M1 Mac での動作が出来ないためです。  
+
+ただ現在では Serverless Framework で DynamoDB Local を使用する [plugin が Docker に対応した](https://github.com/99x/dynamodb-localhost/issues/63) ため Docker 化しなくても動作するようになった（未検証です）かもしれません。
+
+#### VSCode Remote Containers
+
+![remote_containers](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/07_remote_containers.gif)
+
+VSCode の拡張機能である [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) を予めインストールしておいてください。  
+gif を見る通り Remote Containers を使用し offline コンテナを起動して offline コンテナ内で開発を行います。
+
+#### 開発用コンテナ
+
+docker-compose.yml に開発用のサービスを定義してあります。  
+`docker-compose up` のコマンドでは立ち上がらないように profiles の指定をしているので明示的に開発用のサービスを指定することで開発用のコンテナが立ち上がります。
+
+```shell
+$ docker-compose run --rm runner
+```
+
 ## その他
 
 ちなみにですが [AWS ハンズオン資料](https://aws.amazon.com/jp/aws-jp-introduction/aws-jp-webinar-hands-on/) に [AWS SAM を使ってテンプレートからサーバーレスな環境を構築する](https://pages.awscloud.com/event_JAPAN_Ondemand_Hands-on-for-Beginners-Serverless-2_CP.html) というハンズオン資料が既にあり SAM を使用して Infrastructure as Code（IaC）化されています。  
