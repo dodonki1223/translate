@@ -178,6 +178,44 @@ offline_1         | Server ready: http://0.0.0.0:3000 🚀
 
 これでローカルの環境構築完了です！
 
+## デプロイ
+
+デプロイは Terraform と Serverless Framework の２つがあります。  
+このリポジトリではデプロイ順はすごく大切なことなので必ずデプロイ順を間違えずに行いましょう。
+
+### デプロイ環境に関して
+
+デプロイ環境ですが、以下の環境を想定して作成してあります。
+
+| 環境 | 説明             |
+|:----:|:-----------------|
+| dev  | 開発環境         |
+| stg  | ステージング環境 |
+| prod | 本番環境         |
+
+### Terraform
+
+まずは terraform ディレクトリに移動して下さい。
+
+```shell
+$ translate/terraform
+```
+
+デプロイ対象の workspace を選択します。
+
+```shell
+$ terraform workspace select prod
+Switched to workspace "prod".
+```
+
+デプロイコマンドを実行します。
+
+```shell
+$ terraform apply -parallelism=30
+```
+
+Terraform によるデプロイはこれで終了です。
+
 ## Terraform と Serverless Framework について
 
 ![relationship_between_terraform_and_serverless_framework](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/01_relationship_between_terraform_and_serverless_framework.png)
