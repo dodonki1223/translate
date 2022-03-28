@@ -178,52 +178,6 @@ offline_1         | Server ready: http://0.0.0.0:3000 🚀
 
 これでローカルの環境構築完了です！
 
-## デプロイ
-
-デプロイは Terraform と Serverless Framework の２つがあります。  
-このリポジトリではデプロイ順はすごく大切なことなので **必ずデプロイ順を間違えず** に行いましょう。
-
-### デプロイ順に関して
-
-後に詳しく記載してありますが **Serverless Framework は Terraform のリソースに依存** しています。  
-なのでデプロイする時は **必ず Terraform から行う必要** があります。
-
-Serverless Framework からデプロイしようとするとエラーになり失敗します。
-
-
-### デプロイ環境に関して
-
-デプロイ環境ですが、以下の環境を想定して作成してあります。
-
-| 環境 | 説明             |
-|:----:|:-----------------|
-| dev  | 開発環境         |
-| stg  | ステージング環境 |
-| prod | 本番環境         |
-
-### Terraform
-
-まずは terraform ディレクトリに移動して下さい。
-
-```shell
-$ translate/terraform
-```
-
-デプロイ対象の workspace を選択します。
-
-```shell
-$ terraform workspace select prod
-Switched to workspace "prod".
-```
-
-デプロイコマンドを実行します。
-
-```shell
-$ terraform apply -parallelism=30
-```
-
-Terraform によるデプロイはこれで終了です。
-
 ## Terraform と Serverless Framework について
 
 ![relationship_between_terraform_and_serverless_framework](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/01_relationship_between_terraform_and_serverless_framework.png)
@@ -320,6 +274,82 @@ docker-compose.yml に開発用のサービスを定義してあります。
 ```shell
 $ docker-compose run --rm runner
 ```
+
+## デプロイ
+
+デプロイは Terraform と Serverless Framework の２つがあります。  
+このリポジトリではデプロイ順はすごく大切なことなので **必ずデプロイ順を間違えず** に行いましょう。
+
+### デプロイ順に関して
+
+**Serverless Framework は Terraform のリソースに依存** しています。なのでデプロイする時は **必ず Terraform から行う必要** があります。
+
+Serverless Framework からデプロイしようとするとエラーになり失敗します。
+
+### デプロイ環境に関して
+
+デプロイ環境ですが、以下の環境を想定して作成してあります。
+
+| 環境 | 説明             |
+|:----:|:-----------------|
+| dev  | 開発環境         |
+| stg  | ステージング環境 |
+| prod | 本番環境         |
+
+### Terraform
+
+まずは terraform ディレクトリに移動して下さい。
+
+```shell
+$ cd translate/terraform
+```
+
+デプロイ対象の workspace を選択します。
+
+```shell
+$ terraform workspace select prod
+Switched to workspace "prod".
+```
+
+デプロイコマンドを実行します。
+
+```shell
+$ terraform apply -parallelism=30
+```
+
+Terraform によるデプロイはこれで終了です。
+
+### Serverless Framework
+
+まずは serverless ディレクトリに移動して下さい。
+
+```shell
+$ cd translate/serverless
+```
+
+開発用コンテナを実行します。
+
+```shell
+$ docker-compose run --rm runner
+```
+
+デプロイコマンドを実行します。  
+`--stage xxx` のパラメータを元にどの環境にデプロイするかが決まります。
+
+開発環境はローカル実行する時に `DYNAMODB_ENDPOINT` が `http://localhost:${env:DYNAMODB_LOCAL_PORT}` になるようにしているため、デプロイ時は明示的に `DYNAMODB_ENDPOINT` を指定することでデプロイを行います。
+
+```
+# 開発環境へのデプロイ
+$ DYNAMODB_ENDPOINT=https://dynamodb.ap-northeast-1.amazonaws.com yarn deploy --stage dev
+
+# ステージング環境へのデプロイ
+$ yarn deploy --stage stg
+
+# 本番環境へのデプロイ
+$ yarn deploy --stage prod
+```
+
+Serverless Framework によるデプロイはこれで終了です。
 
 ## その他
 
