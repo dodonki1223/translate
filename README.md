@@ -8,9 +8,9 @@
 
 このリポジトリには大きく分けて３つ目的があり作成しています。
 
-- Terraform と Serverless Framework の相互連携
-- サーバーレスアーキテクチャーの Infrastructure as Code（IaC）化
-- ローカル環境にてサーバーレスアーキテクチャーのエミュレートしながらの開発を可能にする
+- **Terraform と Serverless Framework の相互連携**
+- **サーバーレスアーキテクチャーの Infrastructure as Code（IaC）化**
+- **ローカル環境にてサーバーレスアーキテクチャーのエミュレートしながらの開発を可能にする**
 
 基本的にはハンズオン資料で作成したものとほぼ同じになるように作成していますが一部 Lambda レイヤーを導入していたりと少し違っています。  
 
@@ -59,10 +59,10 @@ translate-slsのアクセスの変更に成功しました
 
 ### Terraform の環境構築
 
-ローカル環境であっても Serverless Framework と連携するために AWS Systems Manager Parameter Store を使用する必要があるため、予め開発用のパラメータをセットしておく必要があります。  
+ローカル環境であっても **Serverless Framework と連携** するために **AWS Systems Manager Parameter Store を使用する必要がある** ため、予め開発用のパラメータをセットしておく必要があります。  
 なので Serverless Framework の開発を始める前にまずは AWS に必要なリソースを Terraform を使って作成していきます。
 
-これからの作業は terraform のディレクトリで行うので必ず移動してください。
+これからの作業は **terraform のディレクトリで行う** ので必ず移動してください。
 
 ```shell
 $ cd translate/terraform
@@ -135,7 +135,7 @@ Apply complete! Resources: 7 added, 0 changed, 0 destroyed.
 
 Serverless Framework は基本的に Docker で開発を行うため、Docker が使える状態にしておいてください。
 
-これからの作業は serverless のディレクトリで行うので必ず移動してください。
+これからの作業は **serverless のディレクトリ** で行うので必ず移動してください。
 
 ```shell
 $ cd translate/serverless
@@ -183,24 +183,24 @@ offline_1         | Server ready: http://0.0.0.0:3000 🚀
 ![relationship_between_terraform_and_serverless_framework](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/01_relationship_between_terraform_and_serverless_framework.png)
 
 開発に入る前にまずはこのリポジトリでの Terraform と Serverless Framework についての説明をします。  
-AWS のリソースに関しては Terraform が管理しているものと Serverless Framework が管理しているものがあります。
+AWS のリソースに関しては **Terraform が管理しているもの** と **Serverless Framework が管理しているもの** があります。
 
 ### Terraform の管理化リソース
 
-Terraform が管理しているリソースは IAM ロール, パラメータストアになります。  
+Terraform が管理しているリソースは **IAM ロール, パラメータストア** になります。  
 権限は Serverless Framework で管理せずに Terraform で管理しています。
 
 ![terraform_resources](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/05_terraform_resources.png)
 
 ### Serverless Framework の管理化リソース
 
-Serverless Framework が管理しているリソースは API Gateway, Lambda, DynamoDB, CloudWatch Logs になります。
+Serverless Framework が管理しているリソースは **API Gateway, Lambda, DynamoDB, CloudWatch Logs** になります。
 
 ![serverless_framework](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/06_serverless_framework_resources.png)
 
 ### Terraform と Serverless Framework の連携について
 
-Terraform と Serverless Framework の連携に関してですが「Terraform → Serverless Framework」と「Serverless Framework → Terraform」の２種類がありそれぞれちゃんと連携を考えないといけません。  
+Terraform と Serverless Framework の連携に関してですが **「Terraform → Serverless Framework」** と **「Serverless Framework → Terraform」** の２種類がありそれぞれちゃんと連携を考えないといけません。  
 連携するためにデプロイ順もちゃんと考慮する必要があるのでどうやって連携するのかということだけをちゃんと理解出来るようになっていれば応用がきくのでしっかりと概念を頭に入れておくとよいでしょう。  
 
 このリポジトリでは「Terraform → Serverless Framework」の連携だけ実装されています。ただしサンプルとして「Serverless Framework → Terraform」も連携出来ることも確認済みなのでいつでも連携可能です。
@@ -248,13 +248,13 @@ Terraform の開発は `translate/terraform` のディレクトリに移動し�
 ![local_development_environment](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/02_local_development_environment.png)
 
 Serverless Framework の開発は２通りあります。  
-Docker のコンテナ内で開発することは変わらないのですが、VSCode を使った [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) での開発と開発用のコンテナにログインして開発する方法があります。
+Docker のコンテナ内で開発することは変わらないのですが、VSCode を使った **[Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) での開発** と **開発用のコンテナにログインして開発** する方法があります。
 
 Serverless Framework の開発は translate/serverless のディレクトリに移動して開発を行います。
 
 #### なぜ Docker を使って開発を行っているのか？
 
-DynamoDB Local が M1 Mac だと動作しなかったため仕方なく Docker 化して開発することにしました。
+**DynamoDB Local が M1 Mac だと動作しなかった** ため仕方なく Docker 化して開発することにしました。
 DynamoDB Local で使用されている SQLLite のライブラリが arm64 に対応していないため M1 Mac での動作が出来ないためです。  
 
 ただ現在では Serverless Framework で DynamoDB Local を使用する [plugin が Docker に対応した](https://github.com/99x/dynamodb-localhost/issues/63) ため Docker 化しなくても動作するようになった（未検証です）かもしれません。
@@ -263,7 +263,7 @@ DynamoDB Local で使用されている SQLLite のライブラリが arm64 に�
 
 ![remote_containers](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/07_remote_containers.gif)
 
-VSCode の拡張機能である [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) を予めインストールしておいてください。  
+VSCode の拡張機能である **[Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) を予めインストール** しておいてください。  
 gif を見る通り Remote Containers を使用し offline コンテナを起動して offline コンテナ内で開発を行います。
 
 #### 開発用コンテナ
