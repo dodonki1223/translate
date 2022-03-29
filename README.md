@@ -1,10 +1,10 @@
-# translate
+# translate 🇯🇵 → 🇺🇸
 
 このリポジトリは [AWS ハンズオン資料](https://aws.amazon.com/jp/aws-jp-introduction/aws-jp-webinar-hands-on/) の [サーバーレスアーキテクチャで翻訳 Web API を構築する](https://pages.awscloud.com/event_JAPAN_Hands-on-for-Beginners-Serverless-2019_Contents.html) を参考に Terraform と Serverless Framework で書き直したものになります。  
 
 ![overall](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/00_overall.png)
 
-## 概要
+## 📄 概要
 
 このリポジトリには大きく分けて３つ目的があり作成しています。
 
@@ -14,7 +14,7 @@
 
 基本的にはハンズオン資料で作成したものとほぼ同じになるように作成していますが一部 Lambda レイヤーを導入していたりと少し違っています。  
 
-## 環境構築
+## ⚙️ 環境構築
 
 AWS のリソースは Terraform で管理されているものと Serverless Framework で管理されているものがあります。  
 Terraform の tfstate ファイル（現在の状態を表すファイル）は複数人で開発することを想定しているため AWS S3 に保存して開発を行います。  
@@ -23,7 +23,7 @@ Terraform の tfstate ファイル（現在の状態を表すファイル）は�
 S3 の作成後、Terraform と Serverless Framework の設定を順番に行っていきます。  
 Terraform と Serverless Framework の連携のため、 **設定する順番がとても重要** になってきます。 **必ず Terraform から設定をする必要** があります。
 
-### Terraform と Serverless Framework で使用する S3 の作成
+### 🗑 Terraform と Serverless Framework で使用する S3 の作成
 
 S3 作成用のシェルスクリプトがあるため、基本的にはそのシェルスクリプトを実行するだけで大丈夫です。  
 [AWS CLI](https://docs.aws.amazon.com/ja_jp/streams/latest/dev/kinesis-tutorial-cli-installation.html) を使用してバケットを作成するので、 [AWS CLI](https://docs.aws.amazon.com/ja_jp/streams/latest/dev/kinesis-tutorial-cli-installation.html) が実行できる状態にしておいてください。  
@@ -57,7 +57,7 @@ translate-slsのアクセスの変更に成功しました
 | tfstate の格納バケット                  | translate-terraform |
 | Serverless Framework デプロイ用バケット | terraform-sls       |
 
-### Terraform の環境構築
+### 🌭 Terraform の環境構築
 
 ローカル環境であっても **Serverless Framework と連携** するために **AWS Systems Manager Parameter Store を使用する必要がある** ため、予め開発用のパラメータをセットしておく必要があります。  
 なので Serverless Framework の開発を始める前にまずは AWS に必要なリソースを Terraform を使って作成していきます。
@@ -131,7 +131,7 @@ Terraform used the selected providers to generate the following execution plan. 
 Apply complete! Resources: 7 added, 0 changed, 0 destroyed.
 ```
 
-### Serverless Framework の環境構築
+### 🍔 Serverless Framework の環境構築
 
 Serverless Framework は基本的に Docker で開発を行うため、Docker が使える状態にしておいてください。
 
@@ -178,34 +178,34 @@ offline_1         | Server ready: http://0.0.0.0:3000 🚀
 
 これでローカルの環境構築完了です！
 
-## Terraform と Serverless Framework について
+## ⚔️ Terraform と Serverless Framework について
 
 ![relationship_between_terraform_and_serverless_framework](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/01_relationship_between_terraform_and_serverless_framework.png)
 
 開発に入る前にまずはこのリポジトリでの Terraform と Serverless Framework についての説明をします。  
 AWS のリソースに関しては **Terraform が管理しているもの** と **Serverless Framework が管理しているもの** があります。
 
-### Terraform の管理化リソース
+### 🌭 Terraform の管理化リソース
 
 Terraform が管理しているリソースは **IAM ロール, パラメータストア** になります。  
 権限は Serverless Framework で管理せずに Terraform で管理しています。
 
 ![terraform_resources](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/05_terraform_resources.png)
 
-### Serverless Framework の管理化リソース
+### 🍔 Serverless Framework の管理化リソース
 
 Serverless Framework が管理しているリソースは **API Gateway, Lambda, DynamoDB, CloudWatch Logs** になります。
 
 ![serverless_framework](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/06_serverless_framework_resources.png)
 
-### Terraform と Serverless Framework の連携について
+### 🌭 Terraform と 🍔 Serverless Framework の連携について
 
 Terraform と Serverless Framework の連携に関してですが **「Terraform → Serverless Framework」** と **「Serverless Framework → Terraform」** の２種類がありそれぞれちゃんと連携を考えないといけません。  
 連携するためにデプロイ順もちゃんと考慮する必要があるのでどうやって連携するのかということだけをちゃんと理解出来るようになっていれば応用がきくのでしっかりと概念を頭に入れておくとよいでしょう。  
 
 このリポジトリでは「Terraform → Serverless Framework」の連携だけ実装されています。ただしサンプルとして「Serverless Framework → Terraform」も連携出来ることも確認済みなのでいつでも連携可能です。
 
-### Terraform → Serverless Framework 連携
+### 🌭 Terraform → 🍔 Serverless Framework 連携
 
 Serverless Framework の公式サイトに Terraform との連携方法について書かれている記事がありそれを参考にして連携しています。  
 Terraform で作成したリソースの arn をパラメータストアに設定し設定したパラメータストアから arn を取得して Serverless Framework で使用します。
@@ -221,7 +221,7 @@ custom:
 
 - [The definitive guide to using Terraform with the Serverless Framework](https://www.serverless.com/blog/definitive-guide-terraform-serverless/)
 
-### Serverless Framework → Terraform 連携
+### 🍔 Serverless Framework → 🌭 Terraform 連携
 
 Serverless Framework は CloudFormation を使用してデプロイするので CloudFormation が出力した output を使用して Terraform で連携させます。  
 aws_cloudformation_export を使用することで CloudFormation が出力した情報を読み込むことができるようになるので Terraform でも連携が可能になります。
@@ -232,18 +232,18 @@ data "aws_cloudformation_export" "lambda_function_arn" {
 }
 ```
 
-## 開発
+## 💻 開発
 
 開発は Terraform と Serverless Framework によって方法が違うため、注意して下さい。  
 Serverless Framework に関しては複数の開発方法があるため、好みによって使い分けて下さい。
 
-### Terraform 
+### 🌭 Terraform
 
 開発環境の構築が終わっていればそのまま開発することができます。  
 
 Terraform の開発は `translate/terraform` のディレクトリに移動し、Terraform の通常通りの開発と同じく `terraform init`, `terraform plan`, `terraform apply` などのコマンドを使用して開発を行って下さい。
 
-### Serverless Framework 
+### 🍔 Serverless Framework
 
 ![local_development_environment](https://raw.githubusercontent.com/dodonki1223/image_garage/master/translate/02_local_development_environment.png)
 
@@ -275,18 +275,18 @@ docker-compose.yml に開発用のサービスを定義してあります。
 $ docker-compose run --rm runner
 ```
 
-## デプロイ
+## 🚀 デプロイ
 
 デプロイは Terraform と Serverless Framework の２つがあります。  
 このリポジトリではデプロイ順はすごく大切なことなので **必ずデプロイ順を間違えず** に行いましょう。
 
-### デプロイ順に関して
+### 🚨 デプロイ順に関して
 
 **Serverless Framework は Terraform のリソースに依存** しています。なのでデプロイする時は **必ず Terraform から行う必要** があります。
 
 Serverless Framework からデプロイしようとするとエラーになり失敗します。
 
-### デプロイ環境に関して
+### 🌎 デプロイ環境に関して
 
 デプロイ環境ですが、以下の環境を想定して作成してあります。
 
@@ -296,7 +296,7 @@ Serverless Framework からデプロイしようとするとエラーになり�
 | stg  | ステージング環境 |
 | prod | 本番環境         |
 
-### Terraform
+### 🌭 Terraform
 
 まずは terraform ディレクトリに移動して下さい。
 
@@ -319,7 +319,7 @@ $ terraform apply -parallelism=30
 
 Terraform によるデプロイはこれで終了です。
 
-### Serverless Framework
+### 🍔 Serverless Framework
 
 まずは serverless ディレクトリに移動して下さい。
 
@@ -351,6 +351,6 @@ $ yarn deploy --stage prod
 
 Serverless Framework によるデプロイはこれで終了です。
 
-## その他
+## 📕 その他
 
 ちなみにですが [AWS ハンズオン資料](https://aws.amazon.com/jp/aws-jp-introduction/aws-jp-webinar-hands-on/) に [AWS SAM を使ってテンプレートからサーバーレスな環境を構築する](https://pages.awscloud.com/event_JAPAN_Ondemand_Hands-on-for-Beginners-Serverless-2_CP.html) というハンズオン資料が既にあり SAM を使用して Infrastructure as Code（IaC）化されています。  
